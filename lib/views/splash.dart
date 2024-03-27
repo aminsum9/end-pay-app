@@ -17,22 +17,30 @@ class SplashState extends State<Splash> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    // handle_storage.getDataStorage('token').then((token) {
-    //   if (token.toString() != "") {
-    //     handle_request.postData(Uri.parse('${host.BASE_URL}user/check_login'),
-    //         {"token": token.toString()}).then((response) {
-    //       if (response.statusCode == 200) {
-    //         if (jsonDecode(response.body)['success'] == true)
-    //           // ignore: curly_braces_in_flow_control_structures
-    //           Navigator.pushNamed(context, '/home');
-    //       } else {
-    //         Navigator.pushNamed(context, '/login');
-    //       }
-    //     });
-    //   } else {
-    //     Navigator.pushNamed(context, '/login');
-    //   }
-    // });
+    checkLogin();
+  }
+
+  void checkLogin() async {
+    var token = await handle_storage.getDataStorage('token');
+
+    if (token.toString() != "") {
+      handle_request
+          .postData(Uri.parse('${host.BASE_URL}user/check_login'), {}).then(
+              (response) async {
+        if (response.statusCode == 200) {
+          if (jsonDecode(response.body)['success'] == true) {
+            await handle_storage.saveDataStorage(
+                'token', jsonDecode(response.body)['data']['token']);
+
+            Navigator.pushNamed(context, '/home');
+          }
+        } else {
+          Navigator.pushNamed(context, '/login');
+        }
+      });
+    } else {
+      Navigator.pushNamed(context, '/login');
+    }
   }
 
   @override
