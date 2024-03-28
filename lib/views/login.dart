@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:end_pay_app/widgets/button_regular.dart';
 import 'package:end_pay_app/widgets/regular_header.dart';
 import 'package:flutter/material.dart';
 import 'package:end_pay_app/functions/host.dart' as host;
@@ -31,6 +32,7 @@ class LoginState extends State<Login> {
           await handle_storage.saveDataStorage(
               'token', jsonDecode(response.body)['data']['token']);
 
+          // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/home');
         } else {
           //
@@ -50,23 +52,24 @@ class LoginState extends State<Login> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              RegularHeader(title: "Login"),
-              Container(
-                height: height / 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text('Email:'),
-                    TextField(
-                      controller: email,
-                    ),
-                    Text('Password:'),
-                    TextField(
-                      controller: password,
-                    )
-                  ],
+              RegularHeader(title: "Masuk"),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Container(
+                  height: height / 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('Email:'),
+                      TextField(
+                        controller: email,
+                      ),
+                      const Text('Password:'),
+                      TextField(controller: password, obscureText: true)
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -96,20 +99,9 @@ class BottomContainerState extends State<BottomContainer> {
       alignment: Alignment.center,
       height: height / 8,
       width: double.infinity,
-      child: GestureDetector(
-        onTap: () => widget.handleLogin(),
-        child: Container(
-          color: Colors.blue,
-          width: width - 50,
-          height: (height / 8) - 50,
-          padding: const EdgeInsets.all(10),
-          child: const Align(
-            child: Text(
-              'Masuk',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
+      child: ButtonRegular(
+        onClick: () => widget.handleLogin(),
+        title: 'Masuk',
       ),
     );
   }

@@ -59,9 +59,9 @@ class RouterState extends State<RouterApp> with TickerProviderStateMixin {
                   Colors.lightGreen, // outdated and has no effect to Tabbar
             ),
             routes: {
-              '/account': (context) => Wellcome(),
-              '/login': (context) => Login(),
-              '/register': (context) => Register(),
+              '/wellcome': (context) => const Wellcome(),
+              '/login': (context) => const Login(),
+              '/register': (context) => const Register(),
               '/home': (context) => const Home(),
             }));
   }

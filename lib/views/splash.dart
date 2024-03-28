@@ -35,11 +35,11 @@ class SplashState extends State<Splash> with TickerProviderStateMixin {
             Navigator.pushNamed(context, '/home');
           }
         } else {
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, '/wellcome');
         }
       });
     } else {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamed(context, '/wellcome');
     }
   }
 

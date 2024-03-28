@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:end_pay_app/styles/colors.dart' as colors;
 
 // ignore: must_be_immutable
 class RegularHeader extends StatefulWidget {
@@ -17,8 +18,8 @@ class RegularHeaderState extends State<RegularHeader> {
   Widget build(BuildContext context) {
     return Container(
       height: 80,
-      color: Colors.blue,
-      alignment: Alignment.center,
+      color: Colors.white,
+      alignment: Alignment.bottomCenter,
       width: double.infinity,
       child: Text(
         widget.title,
