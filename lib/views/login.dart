@@ -29,8 +29,12 @@ class LoginState extends State<Login> {
         .then((response) async {
       if (response.statusCode == 200) {
         if (jsonDecode(response.body)['success'] == true) {
+          print(
+              "token login: ${jsonDecode(response.body)['data']['token'].toString()}");
           await handle_storage.saveDataStorage(
-              'token', jsonDecode(response.body)['data']['token']);
+              'token', jsonDecode(response.body)['data']['token'].toString());
+          await handle_storage.saveDataStorage(
+              'user', jsonEncode(jsonDecode(response.body)['data']));
 
           // ignore: use_build_context_synchronously
           Navigator.pushNamed(context, '/home');

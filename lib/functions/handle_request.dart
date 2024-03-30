@@ -4,6 +4,8 @@ import 'package:end_pay_app/functions/handle_storage.dart' as handle_storage;
 Future<http.Response> postData(Uri url, dynamic body) async {
   var token = await handle_storage.getDataStorage('token');
 
+  print("token: $token");
+
   final response = await http
       .post(url, body: body, headers: {'authorization': 'Bearer $token'});
   return response;

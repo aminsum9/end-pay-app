@@ -1,3 +1,5 @@
+import 'package:end_pay_app/views/account.dart';
+import 'package:end_pay_app/views/dashboard.dart';
 import 'package:end_pay_app/views/home.dart';
 import 'package:end_pay_app/views/login.dart';
 import 'package:end_pay_app/views/register.dart';
@@ -5,6 +7,7 @@ import 'package:end_pay_app/views/splash.dart';
 import 'package:end_pay_app/views/wellcome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:end_pay_app/styles/colors.dart' as colors;
 
 class AppRouter extends InheritedWidget {
   final Color color;
@@ -37,13 +40,13 @@ class RouterState extends State<RouterApp> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     // ignore: invalid_use_of_visible_for_testing_member
-    SharedPreferences.setMockInitialValues({});
+    // SharedPreferences.setMockInitialValues({});
   }
 
   @override
   Widget build(BuildContext context) {
     return AppRouter(
-        color: Colors.lightGreen,
+        color: colors.primary,
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             home: const Splash(),
@@ -56,13 +59,15 @@ class RouterState extends State<RouterApp> with TickerProviderStateMixin {
                       // color for indicator (underline)
                       borderSide: BorderSide(color: Colors.white))),
               primaryColor:
-                  Colors.lightGreen, // outdated and has no effect to Tabbar
+                  colors.primary, // outdated and has no effect to Tabbar
             ),
             routes: {
               '/wellcome': (context) => const Wellcome(),
               '/login': (context) => const Login(),
               '/register': (context) => const Register(),
               '/home': (context) => const Home(),
+              '/dashboard': (context) => const Dashboard(),
+              '/account': (context) => const Account(),
             }));
   }
 }
