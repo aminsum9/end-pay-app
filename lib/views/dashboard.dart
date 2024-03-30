@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:end_pay_app/functions/host.dart' as host;
 import 'package:end_pay_app/functions/handle_storage.dart' as handle_storage;
+import 'package:end_pay_app/functions/handle_request.dart' as handle_request;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -15,11 +16,13 @@ class DashboardState extends State<Dashboard> {
   late dynamic dataUser;
   String userName = '';
   String accountType = '';
+  int userBallance = 0;
 
   @override
   void initState() {
     super.initState();
     getDataUser();
+    getBallance();
   }
 
   void getDataUser() async {
@@ -30,6 +33,32 @@ class DashboardState extends State<Dashboard> {
       userName = jsonDecode(user)['name'];
       accountType = jsonDecode(user)['account_type'];
     });
+  }
+
+  void getBallance() async {
+    var token = await handle_storage.getDataStorage('token');
+
+    if (token.toString() != "") {
+      handle_request.postData(
+          Uri.parse('${host.BASE_URL}userballance/get-user-ballance'),
+          {}).then((response) async {
+        if (response.statusCode == 200) {
+          if (jsonDecode(response.body)['success'] == true) {
+            setState(() {
+              userBallance = jsonDecode(response.body)['data'];
+            });
+          }
+        } else {
+          //
+        }
+      });
+    } else {
+      //
+    }
+  }
+
+  void upgradeAccountType() async {
+    //
   }
 
   @override
@@ -77,14 +106,20 @@ class DashboardState extends State<Dashboard> {
                             accTypeText,
                             style: const TextStyle(color: Colors.white),
                           ),
-                        )
+                        ),
+                        Visibility(
+                            visible: accountType == 'reguler',
+                            child: ButtonUpgradeAccType(
+                              title: 'upgrade',
+                              onClick: () => upgradeAccountType(),
+                            ))
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Text(
-                        'Saldo Rp. 0',
-                        style: TextStyle(
+                        'Saldo Rp. $userBallance',
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
                     )
@@ -92,5 +127,39 @@ class DashboardState extends State<Dashboard> {
                 )),
           ),
         ));
+  }
+}
+
+class ButtonUpgradeAccType extends StatefulWidget {
+  @override
+  ButtonUpgradeAccTypeState createState() => ButtonUpgradeAccTypeState();
+  final String title;
+  final Function() onClick;
+
+  @override
+  const ButtonUpgradeAccType(
+      {super.key, required this.onClick, required this.title});
+}
+
+class ButtonUpgradeAccTypeState extends State<ButtonUpgradeAccType> {
+  // ignore: empty_constructor_bodies
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => widget.onClick(),
+      child: Container(
+        margin: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.black, borderRadius: BorderRadius.circular(10)),
+        child: Align(
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10),
+          ),
+        ),
+      ),
+    );
   }
 }

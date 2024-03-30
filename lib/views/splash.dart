@@ -25,7 +25,7 @@ class SplashState extends State<Splash> with TickerProviderStateMixin {
 
     if (token.toString() != "") {
       handle_request
-          .postData(Uri.parse('${host.BASE_URL}user/check_login'), {}).then(
+          .postData(Uri.parse('${host.BASE_URL}user/check-login'), {}).then(
               (response) async {
         if (response.statusCode == 200) {
           if (jsonDecode(response.body)['success'] == true) {
