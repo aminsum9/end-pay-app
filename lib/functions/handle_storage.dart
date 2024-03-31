@@ -9,3 +9,9 @@ Future<String> getDataStorage(String key) async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString(key).toString();
 }
+
+Future<String> deleteAllStorage() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  return '';
+}

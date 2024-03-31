@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:end_pay_app/widgets/button_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:end_pay_app/styles/colors.dart' as colors;
+import 'package:end_pay_app/functions/handle_storage.dart' as handle_storage;
 
 class Account extends StatefulWidget {
   const Account({super.key});
@@ -11,6 +13,34 @@ class Account extends StatefulWidget {
 }
 
 class AccountState extends State<Account> {
+  late dynamic dataUser;
+  String userName = '';
+  String userEmail = '';
+  String accountType = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getDataUser();
+  }
+
+  void getDataUser() async {
+    String user = await handle_storage.getDataStorage('user');
+
+    setState(() {
+      dataUser = jsonDecode(user);
+      userName = jsonDecode(user)['name'];
+      userEmail = jsonDecode(user)['email'];
+      accountType = jsonDecode(user)['account_type'];
+    });
+  }
+
+  void handleLogOut() async {
+    await handle_storage.deleteAllStorage();
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamed(context, '/wellcome');
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -18,15 +48,42 @@ class AccountState extends State<Account> {
         child: Scaffold(
           body: SafeArea(
               child: Container(
-            padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
             child: Column(
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width,
                   color: colors.primary,
                   height: 100,
+                  child: Row(
+                    children: [
+                      const Flexible(
+                          flex: 1,
+                          child: Icon(
+                            Icons.person_outline_rounded,
+                            size: 80,
+                          )),
+                      Flexible(
+                          flex: 3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                userName,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                userEmail,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
-                ButtonList(onClick: () => {}, title: 'Keluar')
+                ButtonList(onClick: () => handleLogOut(), title: 'Keluar')
               ],
             ),
           )),
