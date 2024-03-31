@@ -7,37 +7,32 @@ import 'package:end_pay_app/functions/host.dart' as host;
 import 'package:end_pay_app/functions/handle_request.dart' as handle_request;
 import 'package:end_pay_app/functions/handle_storage.dart' as handle_storage;
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class UpgradePremium extends StatefulWidget {
+  const UpgradePremium({super.key});
 
   @override
-  RegisterState createState() => RegisterState();
+  UpgradePremiumState createState() => UpgradePremiumState();
 }
 
-class RegisterState extends State<Register> {
+class UpgradePremiumState extends State<UpgradePremium> {
   final name = TextEditingController();
   final username = TextEditingController();
-  final phone = TextEditingController();
   final address = TextEditingController();
-  final email = TextEditingController();
-  final password = TextEditingController();
-  final passwordConf = TextEditingController();
 
-  void handleRegister() async {
+  void handleUpgradePremium() async {
+    var token = await handle_storage.getDataStorage('token');
+
     var body = {
-      "phone": phone.text,
-      "email": email.text,
-      "password": password.text,
-      "password_conf": passwordConf.text,
+      "name": name.text,
+      "username": username.text,
+      "address": address.text
     };
 
     handle_request
-        .postData(Uri.parse('${host.BASE_URL}user/register'), body)
+        .postData(Uri.parse('${host.BASE_URL}user/upgrade-premium'), body)
         .then((response) async {
       if (response.statusCode == 200) {
         if (jsonDecode(response.body)['success'] == true) {
-          await handle_storage.saveDataStorage(
-              'token', jsonDecode(response.body)['data']['token'].toString());
           await handle_storage.saveDataStorage(
               'user', jsonEncode(jsonDecode(response.body)['data']));
 
@@ -60,31 +55,31 @@ class RegisterState extends State<Register> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            RegularHeader(title: "Daftar"),
+            RegularHeader(title: "Upgrade Premium"),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text('No Telepon:'),
+                  const Text('Nama:'),
                   TextField(
-                    controller: phone,
+                    controller: name,
                   ),
-                  const Text('Email:'),
+                  const Text('Username:'),
                   TextField(
-                    controller: email,
+                    controller: username,
                   ),
-                  const Text('Password:'),
-                  TextField(controller: password, obscureText: true),
-                  const Text('Konfirmasi Password:'),
-                  TextField(controller: passwordConf, obscureText: true)
+                  const Text('Alamat:'),
+                  TextField(
+                    controller: address,
+                  ),
                 ],
               ),
             )
           ],
         ),
         bottomNavigationBar: BottomContainer(
-          handleRegister: () => handleRegister(),
+          handleUpgradePremium: () => handleUpgradePremium(),
         ));
   }
 }
@@ -92,10 +87,10 @@ class RegisterState extends State<Register> {
 class BottomContainer extends StatefulWidget {
   @override
   BottomContainerState createState() => BottomContainerState();
-  final Function() handleRegister;
+  final Function() handleUpgradePremium;
 
   @override
-  const BottomContainer({super.key, required this.handleRegister});
+  const BottomContainer({super.key, required this.handleUpgradePremium});
 }
 
 class BottomContainerState extends State<BottomContainer> {
@@ -103,17 +98,16 @@ class BottomContainerState extends State<BottomContainer> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
-    double width = MediaQuery.sizeOf(context).width;
 
     return Container(
       alignment: Alignment.center,
       height: height / 8,
       width: double.infinity,
       child: GestureDetector(
-        onTap: () => widget.handleRegister(),
+        onTap: () => widget.handleUpgradePremium(),
         child: ButtonRegular(
-          onClick: () => widget.handleRegister(),
-          title: 'Daftar',
+          onClick: () => widget.handleUpgradePremium(),
+          title: 'Upgrade Premium',
         ),
       ),
     );

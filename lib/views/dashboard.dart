@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:end_pay_app/widgets/button_regular.dart';
 import 'package:flutter/material.dart';
 import 'package:end_pay_app/functions/host.dart' as host;
 import 'package:end_pay_app/functions/handle_storage.dart' as handle_storage;
@@ -30,7 +31,8 @@ class DashboardState extends State<Dashboard> {
 
     setState(() {
       dataUser = jsonDecode(user);
-      userName = jsonDecode(user)['name'];
+      userName =
+          jsonDecode(user)?['name'] != null ? jsonDecode(user)['name'] : 'User';
       accountType = jsonDecode(user)['account_type'];
     });
   }
@@ -58,7 +60,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   void upgradeAccountType() async {
-    //
+    Navigator.pushNamed(context, '/upgrade_premium');
   }
 
   @override
@@ -122,7 +124,26 @@ class DashboardState extends State<Dashboard> {
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
-                    )
+                    ),
+                    Center(
+                        child: Column(
+                      children: [
+                        const Padding(padding: EdgeInsets.only(bottom: 20)),
+                        Visibility(
+                            child: ButtonRegular(
+                          title: 'Top Up Saldo',
+                          onClick: () =>
+                              Navigator.pushNamed(context, '/topup_ballance'),
+                        )),
+                        const Padding(padding: EdgeInsets.only(bottom: 20)),
+                        Visibility(
+                            child: ButtonRegular(
+                          title: 'Transfer Saldo',
+                          onClick: () => Navigator.pushNamed(
+                              context, '/transfer_ballance'),
+                        ))
+                      ],
+                    ))
                   ],
                 )),
           ),

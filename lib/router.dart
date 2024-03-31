@@ -4,9 +4,11 @@ import 'package:end_pay_app/views/home.dart';
 import 'package:end_pay_app/views/login.dart';
 import 'package:end_pay_app/views/register.dart';
 import 'package:end_pay_app/views/splash.dart';
+import 'package:end_pay_app/views/topup_ballance.dart';
+import 'package:end_pay_app/views/transfer_ballance.dart';
+import 'package:end_pay_app/views/upgrade_premium.dart';
 import 'package:end_pay_app/views/wellcome.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:end_pay_app/styles/colors.dart' as colors;
 
 class AppRouter extends InheritedWidget {
@@ -65,6 +67,9 @@ class RouterState extends State<RouterApp> with TickerProviderStateMixin {
               '/wellcome': (context) => const Wellcome(),
               '/login': (context) => const Login(),
               '/register': (context) => const Register(),
+              '/upgrade_premium': (context) => const UpgradePremium(),
+              '/topup_ballance': (context) => const TopUpBallance(),
+              '/transfer_ballance': (context) => const TransferBallance(),
               '/home': (context) => const Home(),
               '/dashboard': (context) => const Dashboard(),
               '/account': (context) => const Account(),
