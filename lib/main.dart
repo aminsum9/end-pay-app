@@ -1,6 +1,7 @@
 import 'package:end_pay_app/router.dart';
 import 'package:flutter/material.dart';
 
+@pragma('vm:never-inline')
 void main() {
   runApp(const MyApp());
 }
